@@ -26,7 +26,19 @@ let time: string
 let databaseName: string
 let adminEmail: string
 let payMethods: string[]
+let userMailer: string
+let passMailer: string
+let hostMailer: string
+let portMailer: number
 
+if (process.env.USERMAILER && process.env.PASSMAILER && process.env.HOSTMAILER && process.env.PORTMAILER) {
+  userMailer = process.env.USERMAILER
+  passMailer = process.env.PASSMAILER
+  hostMailer = process.env.HOSTMAILER
+  portMailer = Number(process.env.PORTMAILER)
+} else {
+  exit(1)
+}
 if (!process.env.USERMAILER || !process.env.PASSMAILER || !process.env.HOSTMAILER || !process.env.PORTMAILER) {
   exit(1)
 }
@@ -76,8 +88,8 @@ export = {
   DIR_AVATAR: dirAvatar,
   PAYMETHOD: payMethods,
   HOST: process.env.HOST,
-  USERMAILER: process.env.USERMAILER,
-  PASSMAILER: process.env.PASSMAILER,
-  HOSTMAILER: process.env.HOSTMAILER,
-  PORTMAILER: process.env.PORTMAILER,
+  USERMAILER: userMailer,
+  PASSMAILER: passMailer,
+  HOSTMAILER: hostMailer,
+  PORTMAILER: portMailer,
 }

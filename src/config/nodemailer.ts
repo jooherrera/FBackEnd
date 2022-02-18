@@ -1,16 +1,15 @@
 import { createTransport } from 'nodemailer'
-import Mail from 'nodemailer/lib/mailer'
 import Env from '@config/env'
 
 /* ---------------------------------- GMAIL --------------------------------- */
 
 const transporter = createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
+  host: Env.HOSTMAILER,
+  port: Env.PORTMAILER,
   secure: true,
   auth: {
-    user: 'jooherrera4@gmail.com',
-    pass: 'ztpcauvkrokgxmel',
+    user: Env.USERMAILER,
+    pass: Env.PASSMAILER,
   },
 })
 
