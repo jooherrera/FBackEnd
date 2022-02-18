@@ -106,12 +106,17 @@ const simulatePayment = async (payMethod: string): Promise<boolean> => {
   })
 }
 
+const equalsStrings = (str: string, compareTo: string) => {
+  return str === compareTo
+}
+
 const Helper = {
   orderItemsByQuantity,
   calculatePrice,
   calculateTotalPrice,
   findQuality,
   simulatePayment,
+  equalsStrings,
 }
 
 export default Helper

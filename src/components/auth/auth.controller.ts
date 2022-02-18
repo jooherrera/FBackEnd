@@ -6,6 +6,7 @@ import Env from '@config/env'
 import Core from '@core/index'
 import generateToken from '@helpers/generateToken'
 import AuthDto from './dto/auth.dto'
+import Helper from '@helpers/helper'
 import { isAdmin } from '@helpers/isAdmin'
 import { sendMail } from '@config/nodemailer'
 
@@ -19,11 +20,36 @@ class AuthController {
     this.userStore = userStore
   }
 
+  home = (req: Request, res: Response) => {
+    res.render('home')
+  }
+
+  dashBoard = (req: Request, res: Response) => {
+    console.log('DASHBOARD ', req.userData)
+    res.render('wellcome', {
+      info: req.userData,
+      isAdmin: req.user.isAdmin,
+      status: req.user.status,
+    })
+  }
+
+  loginView = (req: Request, res: Response) => {
+    res.render('login')
+  }
+
+  registerView = (req: Request, res: Response) => {
+    res.render('register')
+  }
+
   register = async (req: Request, res: Response) => {
     try {
-      const { email, password } = req.body
+      const { email, password, confirmPassword } = req.body
       if (isSomeEmpty(email, password)) {
         throw SM.sendMessageError('sintaxError')
+      }
+
+      if (!Helper.equalsStrings(password, confirmPassword)) {
+        throw SM.sendMessageError('passwordMissmatch')
       }
 
       if (await this.store.isEmailRegistered(email)) {
@@ -51,17 +77,22 @@ class AuthController {
 
       sendMail(mailOptions)
 
-      Resp.success({
-        res,
-        clientMsg: SM.sendMessageOk('authRegistered'),
-        data: '',
-      })
+      res.redirect('/')
+      // Resp.success({
+      //   res,
+      //   clientMsg: SM.sendMessageOk('authRegistered'),
+      //   data: '',
+      // })
     } catch (error: any) {
       logError(error, '/register')
-      Resp.error({
-        res,
-        err: error,
+      res.render('error', {
+        code: error.code || 500,
+        message: error.clientMsg || 'Error desconocido. Pronto lo solucionaremos',
       })
+      // Resp.error({
+      //   res,
+      //   err: error,
+      // })
     }
   }
 
@@ -90,17 +121,28 @@ class AuthController {
         expiresIn: Env.EXPIRE_TOKEN_TIME,
       })
 
-      Resp.success({
-        res,
-        clientMsg: SM.sendMessageOk('userLogin'),
-        data: new AuthDto({ token, id: userData._id }),
+      res.cookie('token', token, {
+        httpOnly: true,
       })
+
+      res.redirect('/')
+
+      // Resp.success({
+      //   res,
+      //   clientMsg: SM.sendMessageOk('userLogin'),
+      //   // data:" new AuthDto({ token, id: userData._id })",
+      //   data: '',
+      // })
     } catch (error: any) {
       logError(error, '/login')
-      Resp.error({
-        res,
-        err: error,
+      res.render('error', {
+        code: error.code || 500,
+        message: error.clientMsg || 'Error desconocido. Pronto lo solucionaremos',
       })
+      // Resp.error({
+      //   res,
+      //   err: error,
+      // })
     }
   }
 

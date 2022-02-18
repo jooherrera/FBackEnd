@@ -3,7 +3,7 @@ import { cartController } from '@config/cartControllerWithDao'
 import { productController } from '@config/productControllerWithDao'
 import { userController } from '@config/userControllerWithDao'
 import { authController } from '@config/authControllerWithDao'
-import { IOrderProducts, productForCart } from '@types'
+import { dtoUser, IOrderProducts, IUserWithID, productForCart } from '@types'
 
 import Helper from './helper'
 
@@ -68,6 +68,10 @@ const deleteProductsFromCart = async (id: string): Promise<void> => {
   await cartController.deleteAllProductsAfterPay(id)
 }
 
+const getUser = async (user: string): Promise<IUserWithID> => {
+  return await userController.getUser(user)
+}
+
 const HelperController = {
   findProduct,
   getAllProductsInCart,
@@ -76,5 +80,6 @@ const HelperController = {
   updateStock,
   deleteProductsFromCart,
   getProducts,
+  getUser,
 }
 export default HelperController

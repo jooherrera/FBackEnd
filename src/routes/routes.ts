@@ -10,10 +10,10 @@ import { authIsAdmin, authUser } from '@middlewares/auth'
 
 const router = Router()
 
+router.use('/', NetworkAuth)
 
 router.use('/chat', NetworkChat)
-
-router.use('/api/v1/', NetworkAuth)
+// router.use('/api/v1/', NetworkAuth)
 router.use('/api/v1/user', NetworkUser)
 router.use('/api/v1/products', NetworkProduct)
 router.use('/api/v1/cart', NetworkCart)

@@ -4,7 +4,24 @@ import { Resp, SM } from '@config/handleResp'
 import Env from '@config/env'
 import { logError } from '@helpers/helper'
 import { blockListController } from '@config/blockListControllerWithDao'
-import Helper from '@helpers/index'
+// import Helper from '@helpers/index'
+import Helper from '@helpers/helper'
+import HelperController from '@helpers/helperController'
+
+const cookieJwtAuth = async (req: Request, res: Response, next: NextFunction) => {
+  const { token } = req.cookies
+  try {
+    const infoFromToken = generateToken.verifyToken(token, Env.SECRET_KEY)
+    const userInfo = await HelperController.getUser(infoFromToken.user)
+    req.user = infoFromToken
+    req.userData = userInfo
+    next()
+  } catch (error: any) {
+    logError(error, 'Middleware - cookiJwtAuth')
+    res.clearCookie('token')
+    return res.redirect('/login')
+  }
+}
 
 const authUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -20,7 +37,6 @@ const authUser = async (req: Request, res: Response, next: NextFunction) => {
     const infoFromToken = generateToken.verifyToken(token, Env.SECRET_KEY)
 
     req.user = infoFromToken
-
 
     next()
   } catch (error: any) {
@@ -121,4 +137,4 @@ const checkUserEmail = async (req: Request, res: Response, next: NextFunction) =
   }
 }
 
-export { authUser, addTokenToBlockList, authIsAdmin, checkUserID, checkStatus, checkUserEmail }
+export { authUser, addTokenToBlockList, authIsAdmin, checkUserID, checkStatus, checkUserEmail, cookieJwtAuth }

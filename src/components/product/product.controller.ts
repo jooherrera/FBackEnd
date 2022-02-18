@@ -16,7 +16,6 @@ class ProductController {
 
   getAllProduts = async (req: Request, res: Response) => {
     try {
-      console.log("acacac")
       const products = await this.store.findAll()
 
       Resp.success({

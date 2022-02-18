@@ -11,6 +11,7 @@ import { Server as HttpServer } from 'http'
 import { Server as IOServer } from 'socket.io'
 import { chatController } from '@config/chatControllerWithDao'
 import Env from './config/env'
+import cookieParser from 'cookie-parser'
 
 class ServerExpress {
   private server: Application
@@ -43,6 +44,7 @@ class ServerExpress {
     this.server.use(cors())
     this.server.use(express.json())
     this.server.use(express.urlencoded({ extended: true }))
+    this.server.use(cookieParser())
     this.server.use('/resources/avatar', express.static(__dirname + '/public/avatar'))
     this.server.use('/resources/products', express.static(__dirname + '/public/products'))
     this.server.use('/resources/js', express.static(__dirname + '/public/js'))
@@ -59,47 +61,37 @@ class ServerExpress {
     this.server.set('view engine', 'hbs')
     this.server.set('views', './src/views')
 
+    this.io.on('connection', async (socket) => {
+      socket.emit('connectionMessage', 'Conectado al centro de mensajes.')
 
+      const chats = await chatController.getAllChats()
+      socket.emit('historial', chats)
 
-
-
-
-    this.io.on("connection",async (socket) => {
-      socket.emit("connectionMessage","Te has conectado al socket")
-     
-       const chats = await chatController.getAllChats()
-        socket.emit("historial",chats)
-
-       socket.on("chatFront",async (info: IMessageFromClient) =>{
- 
-        let sennder : string = 'User'
-        if(info.user === Env.ADMIN_EMAIL){
+      socket.on('chatFront', async (info: IMessageFromClient) => {
+        let sennder: string = 'User'
+        if (info.user === Env.ADMIN_EMAIL) {
           sennder = 'System'
         }
-        const msg ={
-          user : info.user,
-          sennder : sennder,
-          message : info.message,
-          sendAt : String(moment().locale('es-mx').format('LLL'))
+        const msg = {
+          user: info.user,
+          sennder: sennder,
+          message: info.message,
+          sendAt: String(moment().locale('es-mx').format('LLL')),
         }
-       
+
         await chatController.addMessage(msg)
-      
-         this.io.sockets.emit("chatBack",msg)
+
+        this.io.sockets.emit('chatBack', msg)
       })
-    
-  
     })
-
-
-
-
   }
 
   private routes(): void {
-    this.server.get('/', (req, res) => {
-     res.send(`HOME API ${this.environmentName}`)
-    })
+    // this.server.get('/', (req, res) => {
+    //   console.log('Cookies: ', req.cookies)
+    //   console.log('Signed Cookies: ', req.signedCookies)
+    //   res.send(`HOME API ${this.environmentName}`)
+    // })
     this.server.use(router)
   }
 

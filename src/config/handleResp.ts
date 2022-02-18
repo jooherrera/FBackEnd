@@ -21,6 +21,7 @@ const errors = {
   orderNotFound: { clientMsg: 'No se encontro ninguna orden', code: 400 },
   emptyCart: { clientMsg: 'El carrito está vacio. No se puede generar una orden', code: 400 },
   invalidEmail: { clientMsg: 'No coincide con el email registrado.', code: 400 },
+  passwordMissmatch: { clientMsg: 'Password no coincide.', code: 400 },
   //--------------------------SERVER---------------------------------
   daoError: '[daoConf.js] - Hubo un problema configurando el DAO',
 }

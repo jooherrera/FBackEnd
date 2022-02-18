@@ -2,23 +2,23 @@ import { JwtPayload } from 'jsonwebtoken'
 import { Types } from 'mongoose'
 /* ---------------------------------- CHAT ---------------------------------- */
 export interface IChatStore {
-  addNewMessage(msg: IMessage):Promise<void>
-  getUserChat(email: string):Promise<IMessage[]| []>
-  getAll():Promise<IMessage[]>
+  addNewMessage(msg: IMessage): Promise<void>
+  getUserChat(email: string): Promise<IMessage[] | []>
+  getAll(): Promise<IMessage[]>
 }
 
 export interface IChat {
   user: string
   messages: {
-    sennder : string
-    message : string
+    sennder: string
+    message: string
     sendAt: string
   }[]
 }
 
 export interface IUpdateMessage {
-  user:string
-  messages : {
+  user: string
+  messages: {
     sennder: string
     message: string
     sendAt: string
@@ -26,7 +26,7 @@ export interface IUpdateMessage {
 }
 
 export interface IMessage {
-  user:string
+  user: string
   sennder: string
   message: string
   sendAt: string
@@ -37,8 +37,6 @@ export interface IMessageFromClient {
   sennder: string
   message: string
 }
-
-
 
 /* ---------------------------------- CORE ---------------------------------- */
 export interface IPayMethod {
@@ -246,6 +244,7 @@ declare global {
   namespace Express {
     interface Request {
       user: JwtPayload
+      userData: IUserWithID
     }
   }
 }

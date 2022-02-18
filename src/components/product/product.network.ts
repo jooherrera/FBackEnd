@@ -6,7 +6,7 @@ import { Router } from 'express'
 
 const NetworkProduct = Router()
 
-NetworkProduct.use(authUser)
+// NetworkProduct.use(authUser)
 
 NetworkProduct.get('/', productController.getAllProduts)
 
