@@ -19,6 +19,9 @@ class OrderController {
     try {
       const { id } = req.params
       const { payMethod, shippingMethod } = req.body
+
+      console.log(payMethod)
+      console.log(shippingMethod)
       //Buscar todos los productos del carrito del usuario.
       const products = await HelperController.getAllProductsInCart(id)
       const productsForEmail = await HelperController.getProducts(id)
@@ -88,17 +91,22 @@ class OrderController {
 
       sendMail(mailOptions)
 
-      Resp.success({
-        res,
-        clientMsg: SM.sendMessageOk('success'),
-        data: '',
-      })
+      res.render('ordenGenerada')
+      // Resp.success({
+      //   res,
+      //   clientMsg: SM.sendMessageOk('success'),
+      //   data: '',
+      // })
     } catch (error: any) {
       logError(error, '[Order - generateOrder]')
-      Resp.error({
-        res,
-        err: error,
+      res.render('error', {
+        code: error.code,
+        message: error.clientMsg,
       })
+      // Resp.error({
+      //   res,
+      //   err: error,
+      // })
     }
   }
 

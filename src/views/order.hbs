@@ -1,0 +1,28 @@
+{{>navbar }}
+
+<h1>Order</h1>
+
+ <form method="POST" action="/api/v1/order/{{id}}"  class=" container "  >
+    <div class="mb-3 row">
+      <label for="payMethod" class="col-sm-2 col-form-label">Name</label>
+      <div class="col-sm-10">
+        <select  id="payMethod" name="payMethod" class="form-select" aria-label="Default select example">
+            <option selected value="efectivo">Efectivo</option>
+            <option value="mercadoPago">Mercado Pago</option>
+       </select>
+      </div>
+    </div>
+    <div class="mb-3 row">
+      <label for="shippingMethod" class="col-sm-2 col-form-label">Description</label>
+      <div class="col-sm-10">
+        <select  id="shippingMethod" name="shippingMethod" class="form-select" aria-label="Default select example">
+            <option selected value="local">Local</option>
+            <option value="correo">Correo</option>
+       </select>
+      </div>
+    </div>
+    
+    <div class="col-12">
+      <button class="btn btn-primary" type="submit" id="btnComprar">Comprar</button>
+    </div>
+  </form>

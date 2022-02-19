@@ -14,6 +14,8 @@ ViewsNetwork.get('/user/update/:id', cookieJwtAuth, viewsController.updateUser)
 
 ViewsNetwork.get('/carrito', cookieJwtAuth, viewsController.carrito)
 
+ViewsNetwork.get('/order', cookieJwtAuth, viewsController.order)
+
 // ViewsNetwork.get('/products', cookieJwtAuth, viewsController.showProducts)
 
 export { ViewsNetwork }

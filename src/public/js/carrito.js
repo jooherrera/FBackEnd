@@ -53,3 +53,7 @@ const getProducts = async () => {
 }
 
 getProducts()
+
+const comprar = () => {
+  window.location = '/order'
+}
