@@ -86,6 +86,20 @@ class ViewsController {
       id: req.user.user,
     })
   }
+
+  getProduct = (req: Request, res: Response) => {
+    const { id } = req.params
+    res.render('oneProduct', {
+      data: {
+        email: req.user.email,
+        status: req.user.status === 'complete' ? true : false,
+        avatar: req.userData.avatar,
+      },
+      isAdmin: req.user.isAdmin,
+      id: req.user.user,
+      idProduct: id,
+    })
+  }
 }
 
 export default new ViewsController()

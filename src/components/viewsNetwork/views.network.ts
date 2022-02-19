@@ -18,4 +18,6 @@ ViewsNetwork.get('/order', cookieJwtAuth, viewsController.order)
 
 ViewsNetwork.get('/miscompras', cookieJwtAuth, viewsController.getOrders)
 
+ViewsNetwork.get('/product/:id', cookieJwtAuth, viewsController.getProduct)
+
 export { ViewsNetwork }
