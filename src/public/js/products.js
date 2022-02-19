@@ -37,13 +37,17 @@ const getProducts = async () => {
 
   btnAdd.forEach((btn) => {
     btn.addEventListener('click', async () => {
-      await fetch(`/api/v1/cart/${user.id}`, {
+      const resp = await fetch(`/api/v1/cart/${user.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ product_id: btn.id }),
       })
+
+      if (resp.status === 202) {
+        window.location = '/carrito'
+      }
     })
   })
 }

@@ -1,5 +1,5 @@
 import { Resp, SM } from '@config/handleResp'
-import { logError } from '@helpers/helper'
+import Helper from '@helpers/helper'
 import { uploadFile } from '@helpers/multerUserAvatar'
 import { uploadProductImage } from '@helpers/multerProductImage'
 import { Request, Response, NextFunction } from 'express'
@@ -7,7 +7,7 @@ import { Request, Response, NextFunction } from 'express'
 const uploadAvatar = (req: Request, res: Response, next: NextFunction) => {
   uploadFile(req, res, function (err) {
     if (err) {
-      logError(err, 'Middleware - uploading file')
+      Helper.logError(err, 'Middleware - uploading file')
       Resp.error({
         res,
         err: SM.sendMessageError('imageError'),
@@ -21,7 +21,7 @@ const uploadAvatar = (req: Request, res: Response, next: NextFunction) => {
 const uploadImageForProduct = (req: Request, res: Response, next: NextFunction) => {
   uploadProductImage(req, res, function (err) {
     if (err) {
-      logError(err, 'Middleware - uploading file')
+      Helper.logError(err, 'Middleware - uploading file')
       Resp.error({
         res,
         err: SM.sendMessageError('imageError'),

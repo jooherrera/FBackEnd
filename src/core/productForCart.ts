@@ -1,5 +1,5 @@
 import { IProduct } from '@types'
-import Helper from '@helpers/index'
+import Helper from '@helpers/helper'
 
 export const productForCart = (product: IProduct) => {
   return Object.freeze({

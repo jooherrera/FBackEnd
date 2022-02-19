@@ -87,11 +87,6 @@ class ServerExpress {
   }
 
   private routes(): void {
-    // this.server.get('/', (req, res) => {
-    //   console.log('Cookies: ', req.cookies)
-    //   console.log('Signed Cookies: ', req.signedCookies)
-    //   res.send(`HOME API ${this.environmentName}`)
-    // })
     this.server.use(router)
   }
 

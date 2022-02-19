@@ -4,10 +4,8 @@ const getProducts = async () => {
   const data = await fetch(`/api/v1/cart/${carritoDiv.id}`)
   const products = await data.json()
 
-  console.log(products)
   let html = ''
 
-  console.log(products.body.data.userCart.products)
   products.body.data.userCart.products.forEach((product) => {
     html += `
   

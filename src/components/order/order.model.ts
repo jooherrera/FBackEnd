@@ -1,5 +1,4 @@
 import { IOrder } from '@types'
-import moment from 'moment'
 import { model, Schema } from 'mongoose'
 const OrderSchema = new Schema<IOrder>(
   {

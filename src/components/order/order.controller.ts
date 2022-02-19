@@ -1,7 +1,7 @@
 import { Resp, SM } from '@config/handleResp'
-import Helper, { logError } from '@helpers/helper'
+import Helper from '@helpers/helper'
 import HelperController from '@helpers/helperController'
-import { IOrder, IOrderProducts, IOrderStore } from '@types'
+import { IOrder, IOrderStore } from '@types'
 import { Request, Response } from 'express'
 import Core from '@core/index'
 import moment from 'moment'
@@ -19,9 +19,6 @@ class OrderController {
     try {
       const { id } = req.params
       const { payMethod, shippingMethod } = req.body
-
-      console.log(payMethod)
-      console.log(shippingMethod)
       //Buscar todos los productos del carrito del usuario.
       const products = await HelperController.getAllProductsInCart(id)
       const productsForEmail = await HelperController.getProducts(id)
@@ -43,7 +40,6 @@ class OrderController {
         throw SM.sendMessageError('invalidShippingMethod')
       }
       //Precio total
-      //   console.log(products)
       const partialPrice = await HelperController.getPartialPrice(products)
       const totalPrice = Number((partialPrice * taxPrice + shippingPrice).toFixed(2))
 
@@ -92,21 +88,12 @@ class OrderController {
       sendMail(mailOptions)
 
       res.render('ordenGenerada')
-      // Resp.success({
-      //   res,
-      //   clientMsg: SM.sendMessageOk('success'),
-      //   data: '',
-      // })
     } catch (error: any) {
-      logError(error, '[Order - generateOrder]')
+      Helper.logError(error, '[Order - generateOrder]')
       res.render('error', {
         code: error.code,
         message: error.clientMsg,
       })
-      // Resp.error({
-      //   res,
-      //   err: error,
-      // })
     }
   }
 
@@ -119,10 +106,9 @@ class OrderController {
         res,
         clientMsg: SM.sendMessageOk('success'),
         data: new OrderDto(order),
-        // data: order,
       })
     } catch (error: any) {
-      logError(error, '[Order - getAllOrder]')
+      Helper.logError(error, '[Order - getAllOrder]')
       Resp.error({
         res,
         err: error,

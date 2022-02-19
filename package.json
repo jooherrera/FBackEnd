@@ -8,12 +8,7 @@
     "copy-assets": "ts-node tools/copyAssets",
     "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts --NODE_ENV=development",
     "clean": "rm -rf dist && rm -rf logs",
-    "build": "tsc && tsc-alias && npm run copy-assets",
-    "test:api": "mocha  -r tsconfig-paths/register --require ts-node/register ./tests/serverAPI.spec.ts --timeout=0",
-    "test:database": "mocha -r tsconfig-paths/register -r ts-node/register ./tests/databaseConnect.spec.ts --watch --watch-files ./tests/databaseConnect.spec.ts --timeout=0",
-    "test:jwt": "mocha  -r tsconfig-paths/register --require ts-node/register ./tests/jwt.spec.ts --timeout=0",
-    "test:register": "mocha  -r tsconfig-paths/register --require ts-node/register ./tests/register.spec.ts --timeout=0",
-    "test:login": "mocha  -r tsconfig-paths/register --require ts-node/register ./tests/register.spec.ts --timeout=0"
+    "build": "tsc && tsc-alias && npm run copy-assets"
   },
   "author": "Jose Herrera",
   "license": "ISC",

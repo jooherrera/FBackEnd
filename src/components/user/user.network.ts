@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { authUser, checkUserID, cookieJwtAuth } from '@middlewares/auth'
+import { cookieJwtAuth } from '@middlewares/auth'
 import { userController } from '@config/userControllerWithDao'
 import { uploadAvatar } from '@middlewares/upload'
 

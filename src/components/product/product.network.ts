@@ -1,12 +1,9 @@
 import { productController } from '@config/productControllerWithDao'
-import { authIsAdmin, authUser, cookieJwtAuthAdmin } from '@middlewares/auth'
-// import { isValidParam } from '@middlewares/isValidParam'
+import { cookieJwtAuthAdmin } from '@middlewares/auth'
 import { uploadImageForProduct } from '@middlewares/upload'
 import { Router } from 'express'
 
 const NetworkProduct = Router()
-
-// NetworkProduct.use(authUser)
 
 NetworkProduct.get('/', productController.getAllProduts)
 

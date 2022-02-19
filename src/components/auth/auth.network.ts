@@ -1,9 +1,8 @@
 import { Router } from 'express'
 import { authController } from '@config/authControllerWithDao'
-import {  cookieJwtAuth, cookieJwtClear } from '@middlewares/auth'
+import { cookieJwtAuth, cookieJwtClear } from '@middlewares/auth'
 
 const NetworkAuth = Router()
-
 
 NetworkAuth.get('/', cookieJwtAuth, authController.home)
 

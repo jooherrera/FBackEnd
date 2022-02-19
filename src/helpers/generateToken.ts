@@ -1,5 +1,4 @@
 import { SM } from '@config/handleResp'
-import { Request } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
 const signToken = (info: any, secretKey: string, options: any) => {

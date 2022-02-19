@@ -1,5 +1,5 @@
 import { orderController } from '@config/orderControllerWithDao'
-import { authUser, checkStatus, checkUserID, cookieJwtAuth } from '@middlewares/auth'
+import { cookieJwtAuth } from '@middlewares/auth'
 import { Router } from 'express'
 
 const NetworkOrder = Router()

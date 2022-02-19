@@ -16,6 +16,6 @@ ViewsNetwork.get('/carrito', cookieJwtAuth, viewsController.carrito)
 
 ViewsNetwork.get('/order', cookieJwtAuth, viewsController.order)
 
-// ViewsNetwork.get('/products', cookieJwtAuth, viewsController.showProducts)
+ViewsNetwork.get('/miscompras', cookieJwtAuth, viewsController.getOrders)
 
 export { ViewsNetwork }

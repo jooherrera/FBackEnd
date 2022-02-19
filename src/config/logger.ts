@@ -60,5 +60,4 @@ switch (Env.NAME) {
     break
 }
 
-// export { LoggerProd, LoggerDev }
 export { Logger }

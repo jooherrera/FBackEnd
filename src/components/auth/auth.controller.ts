@@ -1,13 +1,10 @@
-import { IAuthStore, ICartStore, IUserStore, IUserWithID } from '@types'
-import { isIdentical, isSomeEmpty, logError } from '@helpers/helper'
+import { IAuthStore, ICartStore, IUserStore } from '@types'
 import { Request, Response } from 'express'
 import { SM, Resp } from '@config/handleResp'
 import Env from '@config/env'
 import Core from '@core/index'
 import generateToken from '@helpers/generateToken'
-import AuthDto from './dto/auth.dto'
 import Helper from '@helpers/helper'
-import { isAdmin } from '@helpers/isAdmin'
 import { sendMail } from '@config/nodemailer'
 
 class AuthController {
@@ -48,7 +45,7 @@ class AuthController {
   register = async (req: Request, res: Response) => {
     try {
       const { email, password, confirmPassword } = req.body
-      if (isSomeEmpty(email, password)) {
+      if (Helper.isSomeEmpty(email, password)) {
         throw SM.sendMessageError('sintaxError')
       }
 
@@ -60,7 +57,7 @@ class AuthController {
         throw SM.sendMessageError('alreadyExist')
       }
 
-      const newAuth = Core.newAuth(email, password, isAdmin(email))
+      const newAuth = Core.newAuth(email, password, Helper.isAdmin(email))
       const userAuth = await this.store.register(newAuth)
 
       const newUser = Core.newUser(userAuth._id)
@@ -98,21 +95,12 @@ class AuthController {
       })
 
       res.redirect('/')
-      // Resp.success({
-      //   res,
-      //   clientMsg: SM.sendMessageOk('authRegistered'),
-      //   data: '',
-      // })
     } catch (error: any) {
-      logError(error, '/register')
+      Helper.logError(error, '/register')
       res.render('error', {
         code: error.code || 500,
         message: error.clientMsg || 'Error desconocido. Pronto lo solucionaremos',
       })
-      // Resp.error({
-      //   res,
-      //   err: error,
-      // })
     }
   }
 
@@ -120,13 +108,13 @@ class AuthController {
     try {
       const { email, password } = req.body
 
-      if (isSomeEmpty(email, password)) {
+      if (Helper.isSomeEmpty(email, password)) {
         throw SM.sendMessageError('sintaxError')
       }
 
       const userData = await this.store.findByEmail(email)
 
-      if (!isIdentical(password, userData.password)) {
+      if (!Helper.isIdentical(password, userData.password)) {
         throw SM.sendMessageError('unauthorized')
       }
 
@@ -146,32 +134,13 @@ class AuthController {
       })
 
       res.redirect('/')
-
-      // Resp.success({
-      //   res,
-      //   clientMsg: SM.sendMessageOk('userLogin'),
-      //   // data:" new AuthDto({ token, id: userData._id })",
-      //   data: '',
-      // })
     } catch (error: any) {
-      logError(error, '/login')
+      Helper.logError(error, '/login')
       res.render('error', {
         code: error.code || 500,
         message: error.clientMsg || 'Error desconocido. Pronto lo solucionaremos',
       })
-      // Resp.error({
-      //   res,
-      //   err: error,
-      // })
     }
-  }
-
-  logOut = (req: Request, res: Response) => {
-    Resp.success({
-      res,
-      clientMsg: SM.sendMessageOk('logout'),
-      data: '',
-    })
   }
 }
 

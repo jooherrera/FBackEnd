@@ -1,4 +1,4 @@
-import { model, ObjectId, Schema } from 'mongoose'
+import { model, Schema } from 'mongoose'
 
 type Info = {
   name: string
@@ -31,9 +31,5 @@ const UserSchema = new Schema<User>(
     timestamps: true,
   }
 )
-
-// UserSchema.pre<User>('save', async function () {
-//   this.password = await encryptPassword(this.password)
-// })
 
 export default model<User>('User', UserSchema)

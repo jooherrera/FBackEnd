@@ -1,4 +1,4 @@
-import { dtoUser, Info, IUserWithID } from '@types'
+import { Info, IUserWithID } from '@types'
 
 class UserDto {
   private info: Info

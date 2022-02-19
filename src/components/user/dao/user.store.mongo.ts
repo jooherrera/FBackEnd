@@ -1,7 +1,7 @@
 import { SM } from '@config/handleResp'
-import { getUpdateFields, isUserInfoComplete } from '@helpers/helper'
 import { dataForUpdate, IEmptyUser, Info, IUserStore, IUserWithID } from '@types'
 import userModel from '../user.model'
+import Helper from '@helpers/helper'
 
 class UserStoreMongo implements IUserStore {
   async findUser(authId: string): Promise<IUserWithID> {
@@ -28,14 +28,14 @@ class UserStoreMongo implements IUserStore {
 
   async updateUser(authId: string, data: dataForUpdate, avatarUrl: string): Promise<boolean> {
     try {
-      const infoUpdate = getUpdateFields(data, avatarUrl)
+      const infoUpdate = Helper.getUpdateFields(data, avatarUrl)
 
       await userModel.findOneAndUpdate({ authId }, infoUpdate)
       const user = await userModel.findOne({ authId })
 
       if (user) {
         const info: Info = user.info
-        if (isUserInfoComplete(info)) {
+        if (Helper.isUserInfoComplete(info)) {
           return true
         } else {
           return false

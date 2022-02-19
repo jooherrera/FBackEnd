@@ -13,13 +13,10 @@ const transporter = createTransport({
   },
 })
 
-//Enviar Mail
-
 export async function sendMail(mailOptions: any) {
   try {
-    const response = await transporter.sendMail(mailOptions)
-    console.log(response)
+    await transporter.sendMail(mailOptions)
   } catch (error) {
-    console.log(error)
+    throw new Error('Problemas al mandar email')
   }
 }

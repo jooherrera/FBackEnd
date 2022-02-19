@@ -1,10 +1,7 @@
-import { orderController } from '@config/orderControllerWithDao'
 import { cartController } from '@config/cartControllerWithDao'
 import { productController } from '@config/productControllerWithDao'
 import { userController } from '@config/userControllerWithDao'
-import { authController } from '@config/authControllerWithDao'
-import { dtoUser, IOrderProducts, IUserWithID, productForCart } from '@types'
-
+import { IUserWithID } from '@types'
 import Helper from './helper'
 
 const findProduct = async (id: string) => {
@@ -14,7 +11,6 @@ const findProduct = async (id: string) => {
 const getAllProductsInCart = async (id: string) => {
   const cart = await cartController.getCart(id)
   const productList = Helper.orderItemsByQuantity(cart.products)
-
   return productList
 }
 
@@ -53,7 +49,6 @@ const getPartialPrice = async (products: any): Promise<number> => {
 }
 
 const updateStock = async (products: any): Promise<void> => {
-  console.log(products)
   await Promise.all(
     products.map((item: any) => {
       Object.entries(item).forEach(async ([value, key]) => {
@@ -61,7 +56,6 @@ const updateStock = async (products: any): Promise<void> => {
       })
     })
   )
-  // await productController.updateStock()
 }
 
 const deleteProductsFromCart = async (id: string): Promise<void> => {

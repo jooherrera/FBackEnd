@@ -5,7 +5,6 @@ import authStoreMongo from '@components/auth/dao/auth.store.mongo'
 import authStoreFile from '@components/auth/dao/auth.store.file'
 
 import UserController from '@components/user/user.controller'
-
 import Env from '@config/env'
 
 let userController: UserController

@@ -17,7 +17,6 @@ class MongoDb implements IDataBase {
         await mongoose.connect(this.URI)
         resolve(true)
       } catch (error) {
-        // reject(error)
         reject(false)
       }
     })

@@ -1,33 +1,42 @@
-import { dataForUpdate, IBodyProduct, Info, IPayMethod, productForCart } from '@types'
+import { dataForUpdate, IBodyProduct, Info, productForCart } from '@types'
 import { Logger } from '@config/logger'
 import bcryptjs from 'bcryptjs'
+import mongoose from 'mongoose'
 
-export const isDevelopment = (environment: string): boolean => {
-  return environment === 'dev'
+import Env from '@config/env'
+
+const newMongooseId = () => {
+  return String(new mongoose.Types.ObjectId())
 }
 
-export const getProperty = (object: any, prop: string): string => {
-  const property = Object.entries(object)
-    .filter((key) => key[0] === prop)
-    .flat()[1]
-  return typeof property === 'string' ? property : ''
+const isAdmin = (email: string): boolean => {
+  return email === Env.ADMIN_EMAIL
 }
 
-export const isComplete = (element: any): boolean => element !== ''
+// const isDevelopment = (environment: string): boolean => {
+//   return environment === 'dev'
+// }
 
-export const isUserInfoComplete = (info: Info): boolean => {
-  return Object.keys(info).every((key) => isComplete(info[key]))
+// export const getProperty = (object: any, prop: string): string => {
+//   const property = Object.entries(object)
+//     .filter((key) => key[0] === prop)
+//     .flat()[1]
+//   return typeof property === 'string' ? property : ''
+// }
+
+const isValidID = (id: string) => {
+  return id.length === 24
 }
 
-export const isSomeEmpty = (...elements: any[]): boolean => {
+const isSomeEmpty = (...elements: any[]): boolean => {
   return elements.some(isEmpty)
 }
 
-export const isIdentical = (password: string, passwordWithHash: string): boolean => {
+const isIdentical = (password: string, passwordWithHash: string): boolean => {
   return bcryptjs.compareSync(password, passwordWithHash)
 }
 
-export const logError = (error: any, from: string): void => {
+const logError = (error: any, from: string): void => {
   if (!error.clientMsg && error.serverMsg) {
     Logger.msg.error(`${error.from} -- ${error.serverMsg}`)
   }
@@ -36,7 +45,9 @@ export const logError = (error: any, from: string): void => {
   }
 }
 
-export const getUpdateFields = (data: dataForUpdate, avatarUrl: string) => {
+/* ----------------------------------- -- ----------------------------------- */
+
+const getUpdateFields = (data: dataForUpdate, avatarUrl: string) => {
   let info: any = new Set()
   Object.keys(data).forEach((key) => {
     info[`info.${key}`] = data[key]
@@ -55,7 +66,12 @@ export const getUpdateFields = (data: dataForUpdate, avatarUrl: string) => {
 
   return infoUpdate
 }
-/* ----------------------------------- -- ----------------------------------- */
+
+const isComplete = (element: any): boolean => element !== ''
+
+const isUserInfoComplete = (info: Info): boolean => {
+  return Object.keys(info).every((key) => isComplete(info[key]))
+}
 
 const checkEmpty = (body: IBodyProduct): boolean => {
   const { name, description, category, price, stock } = body
@@ -116,6 +132,10 @@ const equalsStrings = (str: string, compareTo: string) => {
 
 const isEmpty = (element: any): boolean => element === undefined || element === ''
 
+const noInfoForUpdate = (body: any, image: string | undefined) => {
+  return Object.entries(body).length === 0 && !image
+}
+
 const Helper = {
   orderItemsByQuantity,
   calculatePrice,
@@ -125,6 +145,15 @@ const Helper = {
   equalsStrings,
   checkEmpty,
   isEmpty,
+  isUserInfoComplete,
+  getUpdateFields,
+  logError,
+  isIdentical,
+  isSomeEmpty,
+  isValidID,
+  newMongooseId,
+  isAdmin,
+  noInfoForUpdate,
 }
 
 export default Helper

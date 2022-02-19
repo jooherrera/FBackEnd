@@ -1,6 +1,5 @@
 import { SM } from '@config/handleResp'
-import { ICart, ICartStore, IProduct, productForCart } from '@types'
-import { Types } from 'mongoose'
+import { ICart, ICartStore, productForCart } from '@types'
 import cartModel from '../cart.model'
 
 class CartStoreMongo implements ICartStore {
@@ -38,8 +37,6 @@ class CartStoreMongo implements ICartStore {
         { authId: cart_id },
         { $pull: { products: { _idInCart: _idInCart } } }
       )
-
-      // const updatedCart = cart?.products.findIndex((prod) => String(prod._id) === product_id)
     } catch (error: any) {
       throw SM.sendMessageError('', error, '[CartStore - removeProductFromCart]')
     }

@@ -1,4 +1,4 @@
-import { ICart, ICartStore, IProduct, productForCart } from '@types'
+import { ICart, ICartStore, productForCart } from '@types'
 
 class CartStoreFile implements ICartStore {
   createCart(cart: ICart): Promise<void> {

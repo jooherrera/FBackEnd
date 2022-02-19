@@ -1,10 +1,9 @@
 import { Resp, SM } from '@config/handleResp'
-import { logError } from '@helpers/helper'
 import { ICartStore, IProduct } from '@types'
 import { Request, Response } from 'express'
 import { isValidObjectId } from 'mongoose'
 import CartDTO from './dto/cart.dto'
-import Helper from '@helpers/index'
+import Helper from '@helpers/helper'
 import Core from '@core/index'
 import HelperController from '@helpers/helperController'
 
@@ -21,14 +20,14 @@ class CartController {
         throw SM.sendMessageError('invalidParam')
       }
       const cart = await this.store.findById(id)
-      console.log(cart)
+
       Resp.success({
         res,
         clientMsg: SM.sendMessageOk('success'),
         data: new CartDTO(cart),
       })
     } catch (error: any) {
-      logError(error, '[Cart - findCartById]')
+      Helper.logError(error, '[Cart - findCartById]')
       Resp.error({
         res,
         err: error,
@@ -59,9 +58,8 @@ class CartController {
         clientMsg: SM.sendMessageOk('newProductAdded'),
         data: '',
       })
-      // const product = await this.store.findById(product_id)
     } catch (error: any) {
-      logError(error, '[Cart - addProduct]')
+      Helper.logError(error, '[Cart - addProduct]')
       Resp.error({
         res,
         err: error,
@@ -80,7 +78,7 @@ class CartController {
         data: '',
       })
     } catch (error: any) {
-      logError(error, '[Cart - removeProduct]')
+      Helper.logError(error, '[Cart - removeProduct]')
       Resp.error({
         res,
         err: error,
@@ -98,7 +96,7 @@ class CartController {
         data: '',
       })
     } catch (error: any) {
-      logError(error, '[Cart - deleteAllProducts]')
+      Helper.logError(error, '[Cart - deleteAllProducts]')
       Resp.error({
         res,
         err: error,

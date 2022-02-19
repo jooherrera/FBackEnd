@@ -1,11 +1,9 @@
 import { Resp, SM } from '@config/handleResp'
-import { logError } from '@helpers/helper'
 import Core from '@core/index'
 import { IProductStore } from '@types'
 import { Request, Response } from 'express'
 import ProductDTO from './dto/product.dto'
 import { getParam } from '@helpers/getParam'
-import { noInfoForUpdate } from '@helpers/noInfoForUpdate'
 import Env from '@config/env'
 import Helper from '@helpers/helper'
 
@@ -25,7 +23,7 @@ class ProductController {
         data: products.map((product) => new ProductDTO(product)),
       })
     } catch (error: any) {
-      logError(error, '[Product - getAllProduts]')
+      Helper.logError(error, '[Product - getAllProduts]')
       Resp.error({
         res,
         err: error,
@@ -42,30 +40,19 @@ class ProductController {
       await this.store.add(newProduct)
 
       res.redirect('/')
-      // Resp.success({
-      //   res,
-      //   clientMsg: SM.sendMessageOk('newProductAdded'),
-      //   data: '',
-      // })
     } catch (error: any) {
-      logError(error, '[Product - addOneProduct]')
+      Helper.logError(error, '[Product - addOneProduct]')
       res.render('error', {
         code: error.code,
         message: error.clientMsg,
       })
-      // Resp.error({
-      //   res,
-      //   err: error,
-      // })
     }
   }
 
   getProductByParam = async (req: Request, res: Response) => {
     try {
       const { idCategory } = req.params
-
       const param = getParam(idCategory)
-
       const product = await this.store.findByParam(param)
 
       Resp.success({
@@ -74,7 +61,7 @@ class ProductController {
         data: product.map((prod: any) => new ProductDTO(prod)),
       })
     } catch (error: any) {
-      logError(error, '[Product - getProductByParam]')
+      Helper.logError(error, '[Product - getProductByParam]')
       Resp.error({
         res,
         err: error,
@@ -94,8 +81,7 @@ class ProductController {
         }
       })
 
-      // const param = getParam(id)
-      if (noInfoForUpdate(fieldsForUpdate, imgName)) {
+      if (Helper.noInfoForUpdate(fieldsForUpdate, imgName)) {
         Resp.success({
           res,
           clientMsg: SM.sendMessageOk('noFieldsForUpdate'),
@@ -116,7 +102,7 @@ class ProductController {
         data: '',
       })
     } catch (error: any) {
-      logError(error, '[Product - updateProduct]')
+      Helper.logError(error, '[Product - updateProduct]')
       Resp.error({
         res,
         err: error,
@@ -134,7 +120,7 @@ class ProductController {
         data: '',
       })
     } catch (error: any) {
-      logError(error, '[Product - deleteProduct]')
+      Helper.logError(error, '[Product - deleteProduct]')
       Resp.error({
         res,
         err: error,

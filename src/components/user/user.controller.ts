@@ -2,8 +2,7 @@ import { IAuthStore, IUserStore } from '@types'
 import { Request, Response } from 'express'
 import { SM, Resp } from '@config/handleResp'
 import Env from '@config/env'
-import { logError } from '@helpers/helper'
-import { noInfoForUpdate } from '@helpers/noInfoForUpdate'
+import Helper from '@helpers/helper'
 import UserDto from './dto/user.dto'
 import generateToken from '@helpers/generateToken'
 
@@ -18,14 +17,7 @@ class UserController {
   show = async (req: Request, res: Response) => {
     try {
       const { id } = req.params
-      console.log(id)
-      // const emptyUser = Core.newUser()
       const userData = await this.store.findUser(id)
-
-      // const info = {
-      //   info: userData.info,
-      //   avatar: userData.avatar,
-      // }
 
       Resp.success({
         res,
@@ -33,8 +25,7 @@ class UserController {
         data: new UserDto(userData),
       })
     } catch (error: any) {
-      logError(error, '[User - Show]')
-
+      Helper.logError(error, '[User - Show]')
       Resp.error({
         res,
         err: error,
@@ -55,7 +46,7 @@ class UserController {
         }
       })
 
-      if (noInfoForUpdate(fieldsForUpdate, imgName)) {
+      if (Helper.noInfoForUpdate(fieldsForUpdate, imgName)) {
         Resp.success({
           res,
           clientMsg: SM.sendMessageOk('noFieldsForUpdate'),
@@ -98,7 +89,7 @@ class UserController {
         data: '',
       })
     } catch (error: any) {
-      logError(error, '[User - Update]')
+      Helper.logError(error, '[User - Update]')
       Resp.error({
         res,
         err: error,

@@ -13,7 +13,6 @@ export const selectDatabase = (optionFromEnv: string) => {
         throw `No existe base de datos que coincida con --> ${optionFromEnv}`
     }
   } catch (error) {
-    console.log(error)
     exit()
   }
 }

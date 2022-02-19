@@ -74,6 +74,18 @@ class ViewsController {
       id: req.user.user,
     })
   }
+
+  getOrders = (req: Request, res: Response) => {
+    res.render('allOrders', {
+      data: {
+        email: req.user.email,
+        status: req.user.status === 'complete' ? true : false,
+        avatar: req.userData.avatar,
+      },
+      isAdmin: req.user.isAdmin,
+      id: req.user.user,
+    })
+  }
 }
 
 export default new ViewsController()

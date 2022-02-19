@@ -15,3 +15,11 @@ const home = () => {
 const carrito = () => {
   window.location = '/carrito'
 }
+
+const allOrders = () => {
+  window.location = '/miscompras'
+}
+
+const chat = () => {
+  window.location = '/chat'
+}
