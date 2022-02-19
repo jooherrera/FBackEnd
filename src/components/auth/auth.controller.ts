@@ -21,15 +21,19 @@ class AuthController {
   }
 
   home = (req: Request, res: Response) => {
-    res.render('home')
-  }
+    let status: boolean = false
+    if (Helper.equalsStrings(req.user.status, 'complete')) {
+      status = true
+    }
 
-  dashBoard = (req: Request, res: Response) => {
-    console.log('DASHBOARD ', req.userData)
-    res.render('wellcome', {
-      info: req.userData,
+    res.render('home', {
+      data: {
+        email: req.user.email,
+        status,
+        avatar: req.userData.avatar,
+      },
       isAdmin: req.user.isAdmin,
-      status: req.user.status,
+      id: req.user.user,
     })
   }
 
@@ -76,6 +80,22 @@ class AuthController {
       }
 
       sendMail(mailOptions)
+
+      const userData = await this.store.findByEmail(email)
+
+      const infoToSign = {
+        user: userData._id,
+        email: userData.email,
+        status: userData.status,
+        isAdmin: userData.isAdmin,
+      }
+      const token = generateToken.signToken(infoToSign, Env.SECRET_KEY, {
+        expiresIn: Env.EXPIRE_TOKEN_TIME,
+      })
+
+      res.cookie('token', token, {
+        httpOnly: true,
+      })
 
       res.redirect('/')
       // Resp.success({

@@ -8,5 +8,6 @@ export const productForCart = (product: IProduct) => {
     name: product.name,
     description: product.description,
     price: product.price,
+    imageURL: product.imageURL,
   })
 }

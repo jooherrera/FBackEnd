@@ -1,7 +1,9 @@
-<div class='container'>
+<div class='container mt-5'>
 
-  <h3 class='text-center'>Centro de mensajes</h3>
-  <div class='chatWindow' id='mensajes'></div>
+  <h3 class='text-center mb-5'>Centro de mensajes</h3>
+  <div class='chatWindow mb-5' id='mensajes' style='max-height:200px; overflow: auto;'>
+
+  </div>
 
   <h2 class='text-center mb-3'> Ingrese mensaje</h2>
   <form class='form-floating'>
@@ -22,19 +24,5 @@
 
 </div>
 
-<script>
-  const btn = document.getElementById('btnChat');
-  const email = document.getElementById('email');
-  const msg = document.getElementById('msg');
-  btn.addEventListener('click', (e) => {
-    e.preventDefault()
-    if (email.value !== "") {
-      info = {
-        user : email.value,
-        sennder: 'User',
-        message: msg.value,
-      }
-      socket.emit("chatFront", info)
-    }
-  })
-</script>
+<script src='/resources/js/chatGlobal.js'></script>
+{{! <script src='/resources/js/index.js'></script> }}

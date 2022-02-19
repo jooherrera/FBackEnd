@@ -27,7 +27,6 @@ class UserController {
       //   avatar: userData.avatar,
       // }
 
-      
       Resp.success({
         res,
         clientMsg: SM.sendMessageOk('success'),
@@ -49,6 +48,12 @@ class UserController {
       const imgName = req.file?.filename
       const fieldsForUpdate = req.body
       let token: string
+
+      Object.keys(fieldsForUpdate).forEach((key) => {
+        if (fieldsForUpdate[key] === '') {
+          delete fieldsForUpdate[key]
+        }
+      })
 
       if (noInfoForUpdate(fieldsForUpdate, imgName)) {
         Resp.success({
@@ -83,10 +88,14 @@ class UserController {
         token = ''
       }
 
+      res.cookie('token', token, {
+        httpOnly: true,
+      })
+
       Resp.success({
         res,
         clientMsg: SM.sendMessageOk('updateOk'),
-        data: token,
+        data: '',
       })
     } catch (error: any) {
       logError(error, '[User - Update]')

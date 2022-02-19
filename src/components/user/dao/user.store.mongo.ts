@@ -1,5 +1,5 @@
 import { SM } from '@config/handleResp'
-import { getUpdateFields, isComplete, isEmpty, isUserInfoComplete } from '@helpers/helper'
+import { getUpdateFields, isUserInfoComplete } from '@helpers/helper'
 import { dataForUpdate, IEmptyUser, Info, IUserStore, IUserWithID } from '@types'
 import userModel from '../user.model'
 

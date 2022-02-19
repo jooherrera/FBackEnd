@@ -1,6 +1,57 @@
-{{#if info}}
-  <h1>Usuario</h1>
+{{#if isAdmin}}
+  <div class='text-center'>
+    <h2>Panel de administrador</h2>
+    <div class='d-flex justify-content-center'>
+      <div class='mx-2'>
+        <button class='btn btn-primary btn-lg' onclick='add()'>Agregar producto</button>
+      </div>
+      <div class='mx-2'>
+        <button class='btn btn-primary btn-lg' onclick='getAll()'>Ver todos los productos</button>
+      </div>
+      <div class='mx-2'>
+        <button class='btn btn-danger btn-lg' onclick='logOut()'>LogOut</button>
+      </div>
+      <div class='mx-2'>
+        <button class='btn btn-primary btn-lg' onclick='chat()'>chat</button>
+      </div>
+    </div>
+  </div>
+
+  <script src='/resources/js/adminNav.js'></script>
 {{else}}
-  <h1>Invitado</h1>
-  {{>loginBtn }}
+
+  <div class='container'>
+    <div class='row'>
+      <div class='col-10'>
+        <div class='text-center'>
+          <h2>Panel de usuario</h2>
+          <span class='user' id={{id}}></span>
+          <div class='d-flex justify-content-center'>
+            <div class='mx-2'>
+              <button class='btn btn-primary btn-lg' onclick='updateInfo()'>Actualizar informacion</button>
+            </div>
+            {{#if data.status}}
+              <div class='mx-2'>
+                <button class='btn btn-primary btn-lg' onclick='home()'>Home</button>
+              </div>
+              <div class='mx-2'>
+                <button class='btn btn-primary btn-lg' onclick='carrito()'>Carrito</button>
+              </div>
+              <div class='mx-2'>
+                <button class='btn btn-primary btn-lg' onclick='getAll()'>Mis Ordenes</button>
+              </div>
+            {{/if}}
+            <div class='mx-2'>
+              <button class='btn btn-danger btn-lg' onclick='logOut()'>LogOut</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='col-2'>
+        <img src='/resources{{data.avatar}}' alt='avatar' width='100%' />
+      </div>
+    </div>
+  </div>
+
+  <script src='/resources/js/navbar.js'></script>
 {{/if}}

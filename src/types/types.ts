@@ -154,6 +154,14 @@ export interface IProductDTO {
   stock: number
 }
 
+export interface IBodyProduct {
+  name: string
+  description: string
+  category: string
+  price: number
+  stock: number
+}
+
 /* ------------------------------- ENVIRONMENT ------------------------------ */
 export interface IEnvironment {
   port: number

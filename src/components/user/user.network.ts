@@ -1,14 +1,12 @@
 import { Router } from 'express'
-import { authUser, checkUserID } from '@middlewares/auth'
+import { authUser, checkUserID, cookieJwtAuth } from '@middlewares/auth'
 import { userController } from '@config/userControllerWithDao'
 import { uploadAvatar } from '@middlewares/upload'
 
 const NetworkUser = Router()
 
-NetworkUser.use(authUser)
+NetworkUser.get('/:id', cookieJwtAuth, userController.show)
 
-NetworkUser.get('/:id', checkUserID, userController.show)
-
-NetworkUser.patch('/:id', checkUserID, uploadAvatar, userController.update)
+NetworkUser.patch('/:id', cookieJwtAuth, uploadAvatar, userController.update)
 
 export { NetworkUser }

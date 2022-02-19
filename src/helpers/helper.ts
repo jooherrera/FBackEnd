@@ -1,4 +1,4 @@
-import { dataForUpdate, Info, IPayMethod, productForCart } from '@types'
+import { dataForUpdate, IBodyProduct, Info, IPayMethod, productForCart } from '@types'
 import { Logger } from '@config/logger'
 import bcryptjs from 'bcryptjs'
 
@@ -12,8 +12,6 @@ export const getProperty = (object: any, prop: string): string => {
     .flat()[1]
   return typeof property === 'string' ? property : ''
 }
-
-export const isEmpty = (element: any): boolean => element === undefined || element === ''
 
 export const isComplete = (element: any): boolean => element !== ''
 
@@ -58,6 +56,12 @@ export const getUpdateFields = (data: dataForUpdate, avatarUrl: string) => {
   return infoUpdate
 }
 /* ----------------------------------- -- ----------------------------------- */
+
+const checkEmpty = (body: IBodyProduct): boolean => {
+  const { name, description, category, price, stock } = body
+  return isSomeEmpty(name, description, category, price, stock)
+}
+
 export const orderItemsByQuantity = (products: productForCart[]) => {
   const mapped = products.map((product) => product.producto)
   const newObject = mapped.reduce((acc: any, el) => {
@@ -110,6 +114,8 @@ const equalsStrings = (str: string, compareTo: string) => {
   return str === compareTo
 }
 
+const isEmpty = (element: any): boolean => element === undefined || element === ''
+
 const Helper = {
   orderItemsByQuantity,
   calculatePrice,
@@ -117,6 +123,8 @@ const Helper = {
   findQuality,
   simulatePayment,
   equalsStrings,
+  checkEmpty,
+  isEmpty,
 }
 
 export default Helper

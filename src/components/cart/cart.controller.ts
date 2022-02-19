@@ -21,7 +21,7 @@ class CartController {
         throw SM.sendMessageError('invalidParam')
       }
       const cart = await this.store.findById(id)
-
+      console.log(cart)
       Resp.success({
         res,
         clientMsg: SM.sendMessageOk('success'),

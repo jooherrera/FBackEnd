@@ -1,18 +1,18 @@
 import { cartController } from '@config/cartControllerWithDao'
-import { authUser, checkUserID } from '@middlewares/auth'
+import { authUser, checkUserID, cookieJwtAuth } from '@middlewares/auth'
 import { Router } from 'express'
 
 const NetworkCart = Router()
 
-NetworkCart.use(authUser)
+// NetworkCart.use(authUser)
 // NetworkCart.use(checkUserID)
 
-NetworkCart.get('/:id', checkUserID, cartController.findCartById)
+NetworkCart.get('/:id', cookieJwtAuth, cartController.findCartById)
 
-NetworkCart.post('/:id', checkUserID, cartController.addProduct)
+NetworkCart.post('/:id', cookieJwtAuth, cartController.addProduct)
 
-NetworkCart.patch('/:id', checkUserID, cartController.removeProduct)
+NetworkCart.patch('/:id', cookieJwtAuth, cartController.removeProduct)
 
-NetworkCart.delete('/:id', checkUserID, cartController.deleteAllProducts)
+NetworkCart.delete('/:id', cookieJwtAuth, cartController.deleteAllProducts)
 
 export { NetworkCart }

@@ -1,16 +1,17 @@
-const showAll = () => {
-  window.location = '/api/v1/product'
+const logOut = () => {
+  window.location = '/logout'
 }
-const login = () => {
-  window.location = '/login'
+
+const updateInfo = () => {
+  const user = document.querySelector('.user')
+
+  window.location = `/user/update/${user.id}`
 }
+
 const home = () => {
   window.location = '/'
 }
-const infoUpdate = () => {
-  const id = '{{{auth.user._id}}}'
-  window.location = `/user/${id}/edit`
-}
-const cart = () => {
-  window.location = '/'
+
+const carrito = () => {
+  window.location = '/carrito'
 }

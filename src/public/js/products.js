@@ -1,10 +1,10 @@
 const prodDiv = document.getElementById('productsList')
 
 const getProducts = async () => {
+  const user = document.querySelector('.user')
   const data = await fetch('/api/v1/products/')
   const products = await data.json()
 
-  console.log(products.body.data)
   let html = ''
   products.body.data.forEach((product) => {
     html += `
@@ -19,6 +19,7 @@ const getProducts = async () => {
         <div class="card-footer">
           <small class="text-muted">${product.info.price}</small>
         </div>
+        <button class="btnAdd" id=${product._id} > Add</button>
       </div>
     </div>
     `
@@ -26,10 +27,23 @@ const getProducts = async () => {
   prodDiv.innerHTML = html
 
   const items = document.querySelectorAll('.product')
+  const btnAdd = document.querySelectorAll('.btnAdd')
 
   items.forEach((item) => {
     item.addEventListener('click', () => {
       window.location = `product/${item.id}`
+    })
+  })
+
+  btnAdd.forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      await fetch(`/api/v1/cart/${user.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ product_id: btn.id }),
+      })
     })
   })
 }

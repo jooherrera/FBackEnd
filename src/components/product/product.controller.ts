@@ -7,6 +7,7 @@ import ProductDTO from './dto/product.dto'
 import { getParam } from '@helpers/getParam'
 import { noInfoForUpdate } from '@helpers/noInfoForUpdate'
 import Env from '@config/env'
+import Helper from '@helpers/helper'
 
 class ProductController {
   private store: IProductStore
@@ -34,21 +35,28 @@ class ProductController {
 
   addOneProduct = async (req: Request, res: Response) => {
     try {
+      if (Helper.checkEmpty(req.body)) {
+        throw SM.sendMessageError('bodyEmpty')
+      }
       const newProduct = Core.newProduct({ ...req.body, imageFile: req.file })
-
       await this.store.add(newProduct)
 
-      Resp.success({
-        res,
-        clientMsg: SM.sendMessageOk('newProductAdded'),
-        data: '',
-      })
+      res.redirect('/')
+      // Resp.success({
+      //   res,
+      //   clientMsg: SM.sendMessageOk('newProductAdded'),
+      //   data: '',
+      // })
     } catch (error: any) {
       logError(error, '[Product - addOneProduct]')
-      Resp.error({
-        res,
-        err: error,
+      res.render('error', {
+        code: error.code,
+        message: error.clientMsg,
       })
+      // Resp.error({
+      //   res,
+      //   err: error,
+      // })
     }
   }
 
@@ -79,6 +87,13 @@ class ProductController {
       const { id } = req.params
       const imgName = req.file?.filename
       const fieldsForUpdate = req.body
+
+      Object.keys(fieldsForUpdate).forEach((key) => {
+        if (fieldsForUpdate[key] === '') {
+          delete fieldsForUpdate[key]
+        }
+      })
+
       // const param = getParam(id)
       if (noInfoForUpdate(fieldsForUpdate, imgName)) {
         Resp.success({

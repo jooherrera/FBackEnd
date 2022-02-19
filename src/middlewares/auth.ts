@@ -9,13 +9,30 @@ import Helper from '@helpers/helper'
 import HelperController from '@helpers/helperController'
 
 const cookieJwtAuth = async (req: Request, res: Response, next: NextFunction) => {
-  const { token } = req.cookies
   try {
+    const { token } = req.cookies
     const infoFromToken = generateToken.verifyToken(token, Env.SECRET_KEY)
     const userInfo = await HelperController.getUser(infoFromToken.user)
     req.user = infoFromToken
     req.userData = userInfo
+
     next()
+  } catch (error) {
+    logError(error, 'Middleware - cookiJwtAuth')
+    res.clearCookie('token')
+    return res.redirect('/login')
+  }
+}
+
+const cookieJwtAuthAdmin = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { token } = req.cookies
+    const infoFromToken = generateToken.verifyToken(token, Env.SECRET_KEY)
+    req.user = infoFromToken
+    if (infoFromToken.isAdmin) {
+      return next()
+    }
+    throw new Error('No es Admin')
   } catch (error: any) {
     logError(error, 'Middleware - cookiJwtAuth')
     res.clearCookie('token')
@@ -137,4 +154,19 @@ const checkUserEmail = async (req: Request, res: Response, next: NextFunction) =
   }
 }
 
-export { authUser, addTokenToBlockList, authIsAdmin, checkUserID, checkStatus, checkUserEmail, cookieJwtAuth }
+const cookieJwtClear = async (req: Request, res: Response, next: NextFunction) => {
+  res.clearCookie('token')
+  return res.redirect('/login')
+}
+
+export {
+  authUser,
+  addTokenToBlockList,
+  authIsAdmin,
+  checkUserID,
+  checkStatus,
+  checkUserEmail,
+  cookieJwtAuth,
+  cookieJwtAuthAdmin,
+  cookieJwtClear,
+}
